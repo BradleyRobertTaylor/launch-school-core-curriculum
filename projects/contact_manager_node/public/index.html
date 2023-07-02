@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <script src="/javascripts/jquery.js"></script>
+    <script src="/javascripts/handlebars.js"></script>
+    <script src="javascripts/contact_manager.js"></script>
+  </head>
+  <body>
+    <header class="header">
+      <h1 class="title">Contact Manager</h1>
+      <p class="technologies">Using Node.js, Express, and Handlebars</p>
+    </header>
+    <main>
+      <div class="main-section active">
+        <section class="search-section">
+          <button class="add-contact">Add Contact</button>
+          <input
+            type="text"
+            name="search"
+            id="search-bar"
+            placeholder="Search"
+          />
+        </section>
+        <div class="contacts"></div>
+      </div>
+      <div class="form"></div>
+    </main>
+
+    <script id="contact-info-template" type="text/x-handlebars-template">
+      {{#if contacts}}
+        {{#each contacts}}
+          <div class='single-contact-card'>
+            <h3 class='contact-name'>{{full_name}}</h3>
+            <dl class='contact-info'>
+              <dt class='phone-number-label'>Phone Number:</dt>
+              <dd class='contact-phone-number'>{{phone_number}}</dd>
+              <dt class='email-label'>Email:</dt>
+              <dd class='contact-email'>{{email}}</dd>
+            </dl>
+            <button class='edit' data-id='{{id}}'>Edit</button>
+            <button class='delete' data-id='{{id}}'>Delete</button>
+          </div>
+        {{/each}}
+      {{else}}
+        <section class='no-contacts-section'>
+          <p class='no-contacts'>There is no contacts.</p>
+          <button class='add-contact'>Add Contact</button>
+        </section>
+      {{/if}}
+    </script>
+
+    <script id="contact-form-template" type="text/x-handlebars-template">
+      <h2 class='contact-form-title'>{{title}}</h2>
+      <form novalidate action='{{url}}' method='post'>
+        <dl>
+          <dt>
+            <label for='full_name'>Full name:</label>
+          </dt>
+          <dd>
+            <input
+              required
+              type='text'
+              name='full_name'
+              id='full_name'
+              value='{{full_name}}'
+            />
+          </dd>
+          <dt>
+            <label for='email'>Email address:</label>
+          </dt>
+          <dd>
+            <input
+              required
+              type='email'
+              name='email'
+              id='email'
+              value='{{email}}'
+            />
+          </dd>
+          <dt>
+            <label for='phone_number'>Telephone number:</label>
+          </dt>
+          <dd>
+            <input
+              required
+              type='text'
+              name='phone_number'
+              id='phone_number'
+              value='{{phone_number}}'
+            />
+          </dd>
+        </dl>
+        <button class='submit'>Submit</button>
+      </form>
+      <button class='cancel'>Cancel</button>
+    </script>
+
+    <script id="no-result-template" type="text/x-handlebars-template">
+      <h3 class='no-result-message no-contacts-section'>There is no contacts
+        starting with
+        {{searchString}}.</h3>
+    </script>
+  </body>
+</html>

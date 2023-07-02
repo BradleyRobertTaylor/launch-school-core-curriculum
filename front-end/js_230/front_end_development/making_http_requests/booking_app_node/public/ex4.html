@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="UTF-8">
+    <title>Exercise 4</title>
+    <style>
+     dl {
+         padding: 0.5em;
+     }
+     dt {
+         float: left;
+         clear: left;
+         width: 100px;
+         text-align: right;
+         font-weight: bold;
+         color: #f0595b;
+     }
+     dt::after {
+         content: ":";
+     }
+     dd {
+         margin: 0 0 0 110px;
+         padding: 0 0 0.5em 0;
+     }
+
+     input[type="submit"] {
+         display: inline-block;
+         margin-top: 15px;
+         color: #fff;
+         background: #f0595b;
+         border-color: #f0595b;
+         border-radius: 5px;
+         width: 100px;
+         height: 50px;
+     }
+
+
+     button {
+       display: inline-block;
+       margin-top: 15px;
+       color: #fff;
+       background: #5CAFDE;
+       border-color: #5CAFDE;
+       border-radius: 5px;
+       width: 100px;
+       height: 50px;
+     }
+    </style>
+  </head>
+  <body>
+    <script>
+      let staff;
+
+      (() => {
+        const request = new XMLHttpRequest();
+        request.open('GET', 'http://localhost:3000/api/staff_members');
+        request.responseType = 'json';
+
+        request.addEventListener('load', () => {
+          staff = request.response;
+        });
+
+        request.send();
+      })();
+
+      const addSchedule = (() => {
+        let scheduleCount = 0;
+
+        return () => {
+          scheduleCount++;
+
+          let fieldset = document.createElement('fieldset');
+          let legend = document.createElement('legend');
+          legend.innerText = `Schedule ${scheduleCount}`;
+          fieldset.append(legend);
+
+          let dl = document.createElement('dl');
+          let staffNameDt = document.createElement('dt');
+          let staffNameLabel = document.createElement('label');
+          staffNameLabel.setAttribute('for', 'staff_id');
+          staffNameLabel.innerText = 'Staff Name';
+
+          staffNameDt.append(staffNameLabel);
+          dl.append(staffNameDt);
+          fieldset.append(dl);
+
+          let staffNameDd = document.createElement('dd');
+          let staffNameSelect = document.createElement('select');
+          staffNameSelect.setAttribute('name', 'staff_id')
+          staffNameSelect.setAttribute('id', 'staff_id');
+
+          staff.forEach(({name, id}) => {
+            let option = document.createElement('option');
+            option.innerText = name;
+            staffNameSelect.append(option);
+          });
+
+          staffNameDd.append(staffNameSelect);
+          dl.append(staffNameDd);
+
+          let dateDt = document.createElement('dt');
+          let dateLabel = document.createElement('label');
+          dateLabel.innerText = 'Date';
+          dateLabel.setAttribute('for', 'date');
+
+          dateDt.append(dateLabel);
+          dl.append(dateDt);
+
+          let dateDd = document.createElement('dd');
+          let dateInput = document.createElement('input');
+          dateInput.setAttribute('type', 'text');
+          dateInput.setAttribute('name', 'date');
+          dateInput.setAttribute('id', 'date');
+
+          dateDd.append(dateInput);
+          dl.append(dateDd);
+
+          let timeDt = document.createElement('dt');
+          let timeLabel = document.createElement('label');
+          timeLabel.innerText = 'Time';
+          timeLabel.setAttribute('for', 'time');
+
+          timeDt.append(timeLabel);
+          dl.append(timeDt);
+
+          let timeDd = document.createElement('dd');
+          let timeInput = document.createElement('input');
+          timeInput.setAttribute('type', 'text');
+          timeInput.setAttribute('name', 'time');
+          timeInput.setAttribute('id', 'time');
+
+          timeDd.append(timeInput);
+          dl.append(timeDd);
+
+          document.querySelector('#schedules').append(fieldset);
+        };
+      })();
+    </script>
+    <button id="btnAdd">Add more schedules</button>
+    <form method="post" action="/api/schedules">
+      <div id="schedules">
+        <!-- <fieldset> -->
+        <!--   <legend>Schedule 1</legend> -->
+        <!--   <dl> -->
+        <!--     <dt> -->
+        <!--       <label for="staff_id">Staff Name</label> -->
+        <!--     </dt> -->
+        <!--     <dd> -->
+        <!--       <select id="staff_id"> -->
+        <!--         <option>Aaron Carter</option>  -->
+        <!--       </select> -->
+        <!--     </dd> -->
+        <!--     <dt> -->
+        <!--       <label for="date">Date</label> -->
+        <!--     </dt> -->
+        <!--     <dd> -->
+        <!--       <input type="text" name="date" id="date"> -->
+        <!--     </dd> -->
+        <!--     <dt> -->
+        <!--       <label for="time">Time</label> -->
+        <!--     </dt> -->
+        <!--     <dd> -->
+        <!--       <input type="text" name="time" id="time"> -->
+        <!--     </dd> -->
+        <!--   </dl> -->
+        <!-- </fieldset> -->
+      </div>
+      <input id="btnSubmit" type="submit">
+    </form>
+
+    <script>
+      function getId(staffName) {
+        return staff.filter(({name}) => name === staffName)[0].id;
+      }
+
+      function fieldsetToJson(fieldset) {
+        const select = fieldset.querySelector('#staff_id');
+        const id = getId(select.options[select.selectedIndex].text);
+        const date = fieldset.querySelector('#date').value;
+        const time = fieldset.querySelector('#time').value;
+
+        return {
+          staff_id: id,
+          date: date,
+          time: time,
+        };
+      }
+
+      const addScheduleButton = document.querySelector('#btnAdd');
+      addScheduleButton.addEventListener('click', addSchedule);
+      
+      const form = document.querySelector('form');
+      form.addEventListener('submit', (event) => {
+        event.preventDefault();
+
+        let request = new XMLHttpRequest();
+        request.open('POST', 'http://localhost:3000/api/schedules');
+        request.setRequestHeader('Content-Type', 'application/json');
+        
+        let json = {schedules: []};
+        document.querySelectorAll('fieldset').forEach((fieldset) => {
+          json.schedules.push(fieldsetToJson(fieldset)); 
+        });
+
+        request.send(JSON.stringify(json));
+
+        request.addEventListener('load', () => {
+          if (request.status === 201) form.reset();
+          alert(request.responseText);
+        });
+      });
+    </script>
+  </body>
+</html>

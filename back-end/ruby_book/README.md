@@ -1,0 +1,1 @@
+These are the exercises I've worked on for Launch School Core Curriculum.

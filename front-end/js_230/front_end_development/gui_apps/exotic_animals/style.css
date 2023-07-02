@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #335;
+  color: white;
+}
+
+figure {
+  margin: 0;
+  padding: 1em;
+  width: 100%;
+  background-color: white;
+  border-radius: 3px;
+  position: relative;
+  cursor: pointer;
+}
+
+figcaption {
+  position: absolute;
+  padding: 1em;
+  left: -1px;
+  border-radius: 1em;
+  border: 1px solid white;
+  background-color: #335;
+  z-index: 4;
+  width: 100%;
+  display: none;
+}
+
+.show {
+  display: block;
+}
+
+.title {
+  text-align: center;
+}
+
+.flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 1em;
+}
+
+.row-one {
+  margin-bottom: 1em;
+}
+
+img {
+  width: 100%;
+}

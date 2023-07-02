@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+  </head>
+  <body>
+    <script>
+      const request = new XMLHttpRequest();
+
+      request.open('GET', 'http://localhost:3000/api/schedules');
+      request.responseType = 'json';
+      request.timeout = 5000;
+      
+      request.addEventListener('load', (event) => {
+        if (request.response.length === 0) {
+          alert('There are no schedules available for booking');
+          return;
+        }
+
+        const result = {};
+        request.response.forEach(({staff_id}) => {
+          if (result[staff_id]) {
+            result[staff_id]++;
+          } else {
+            result[staff_id] = 1;
+          }
+        });
+
+        let resultStr = '';
+        for (const id in result) {
+          resultStr += (`staff ${id}: ${result[id]}\n`);
+        }
+
+        alert(resultStr);
+      });
+
+      request.addEventListener('timeout', (event) => {
+        alert('Your request has timed out. Please try again'); 
+      });
+
+      request.addEventListener('loadend', (event) => {
+        alert('Request sent');
+      })
+
+      request.send('');
+    </script>
+  </body>
+</html>

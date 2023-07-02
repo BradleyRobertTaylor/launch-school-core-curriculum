@@ -1,0 +1,94 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #226543;
+  padding: 1em;
+}
+
+h1 {
+  color: #fff;
+}
+
+.todo-list > li {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+  padding: 0.65em 1.25em;
+  max-width: 700px;
+  background-color: #fff;
+  font-size: 1.125rem;
+  border-radius: 5px;
+  align-items: center;
+  margin-bottom: 1em;
+}
+
+.context-menu {
+  background-color: #c8c8c8;
+  width: 200px;
+  padding-left: 0;
+  border-radius: 5px;
+  display: none;
+}
+
+.context-menu li {
+  list-style: none;
+  padding: 0.6em;
+  font-size: 1.125rem;
+  border-bottom: 1px solid white;
+}
+
+#remove {
+  border-bottom: none;
+}
+
+.context-menu li:hover {
+  color: white;
+  background-color: #909090;
+  cursor: pointer;
+}
+
+.delete-menu {
+  position: absolute;
+  display: none;
+  top: 150px;
+  left: 200px;
+  margin: auto;
+  background-color: #fff;
+  padding: 0.5em 2em 0.25em 2em;
+  border-radius: 5px;
+  max-width: 400px;
+  width: 70%;
+  font-size: 1.125rem;
+  border: 1px solid black;
+}
+
+.delete-menu > p {
+  margin-bottom: 3em;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: end;
+}
+
+.delete-menu button {
+  border: none;
+  border-radius: 5px;
+  color: #fff;
+  font-size: 1rem;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.yes-button {
+  background-color: green;
+  margin-right: 0.5em;
+}
+
+.no-button {
+  background-color: red;
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="calculator.css" rel="stylesheet">
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const form = document.querySelector('form');
+        function getValueOf(selector) {
+           return form.querySelector(selector).value;
+        }
+
+        form.addEventListener('submit', e => {
+          e.preventDefault(); 
+
+          const Calculate = {
+            '+': (firstNum, secondNum) => firstNum + secondNum,
+            '-': (firstNum, secondNum) => firstNum - secondNum,
+            '*': (firstNum, secondNum) => firstNum * secondNum,
+          }
+
+          const firstNum = Number(getValueOf('#num1'));
+          const secondNum = Number(getValueOf('#num2'));
+          const operator = getValueOf('#operator')
+          const answer = document.querySelector('.answer');
+
+          answer.textContent = String(Calculate[operator](firstNum, secondNum));
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <p class="answer">0</p>
+    <form>
+      <fieldset>
+        <input type="text" name="num1" id="num1">
+        <select name="operator" id="operator">
+          <option>+</option>
+          <option>-</option>
+          <option>*</option>
+        </select>
+        <input type="text" name="num2" id="num2">
+        <input type="submit">
+      </fieldset>
+    </form>
+  </body>
+</html>

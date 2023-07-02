@@ -1,0 +1,8 @@
+.disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
+a {
+  cursor: pointer; 
+}
